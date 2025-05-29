@@ -33,11 +33,11 @@ _Repo ini adalah hasil pembelajaran dengan rasa ingin tahu yang tinggi, dibantu 
     *   Buat file `.env` berdasarkan contoh berikut:
 
         ```
-        DB_HOST=(Sesuaikan dengan host MySQL Anda, default localhost)
+        DB_HOST=localhost
         DB_USER=(Sesuaikan dengan username MySQL Anda)
         DB_PASSWORD=(Sesuaikan dengan password MySQL Anda)
         DB_NAME=recipe_db
-        DB_PORT=(Sesuaikan dengan port MySQL Anda, default 3306)
+        DB_PORT=3306
         ```
 
     *   Sesuaikan nilai dengan konfigurasi database MySQL Anda.
@@ -45,7 +45,7 @@ _Repo ini adalah hasil pembelajaran dengan rasa ingin tahu yang tinggi, dibantu 
 4.  Jalankan server:
 
     ```bash
-    node src/server.js
+    node server.js
     ```
 
     Server akan berjalan di `http://localhost:3000`.
@@ -73,7 +73,7 @@ _Repo ini adalah hasil pembelajaran dengan rasa ingin tahu yang tinggi, dibantu 
         "title": "Mie Goreng",
         "description": "Mie goreng special",
         "ingredients": "Mie, telur, sayur",
-        "instructions": "Masak semua bahan, aduk rata, sajikan.",
+        "instructions": "Masak semua bahan, aduk rata, sajikan."
       }
     ]
     ```
@@ -106,7 +106,8 @@ _Repo ini adalah hasil pembelajaran dengan rasa ingin tahu yang tinggi, dibantu 
     {
       "title": "Ayam Goreng",
       "description": "Ayam goreng kriuk",
-      "ingredients": "Ayam, tepung, bumbu"
+      "ingredients": "Ayam, tepung, bumbu",
+      "instructions": "Lumuri ayam dengan tepung dan bumbu, goreng hingga matang."
     }
     ```
 
