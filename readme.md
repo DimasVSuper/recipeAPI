@@ -177,11 +177,51 @@ npm start
 - ✅ Minimal logging
 - ✅ Error messages disembunyikan
 
-### ✅ Verifikasi Setup
+### **🧪 Manual Testing Guide**
 
-1. **Cek server running**: Buka `http://localhost:3000/health`
-2. **Test API endpoint**: `curl http://localhost:3000/api/recipes`
-3. **Cek logs**: Monitor terminal untuk request logs
+#### **Using curl Commands**
+```bash
+# Health check
+curl http://localhost:3000/health
+
+# Get all recipes  
+curl http://localhost:3000/api/recipes
+
+# Get specific recipe
+curl http://localhost:3000/api/recipes/1
+
+# Create recipe (JSON)
+curl -X POST http://localhost:3000/api/recipes \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test Recipe","ingredients":["a","b"],"instructions":["1","2"]}'
+
+# Create recipe (Form Data)
+curl -X POST http://localhost:3000/api/recipes \
+  -d "title=Simple Recipe" \
+  -d 'ingredients=["ingredient1", "ingredient2"]' \
+  -d 'instructions=["step1", "step2"]'
+```
+
+#### **Using Postman (Manual)**
+1. **Download Postman** dari [postman.com](https://www.postman.com)
+2. **Create new request**:
+   - Method: POST
+   - URL: `http://localhost:3000/api/recipes`
+3. **Testing Options**:
+   - **JSON**: Body → raw → JSON
+   - **Form Data**: Body → x-www-form-urlencoded
+4. **Form data example**:
+   ```
+   title = "Nasi Gudeg"
+   description = "Makanan khas Jogja"  
+   ingredients = ["nasi", "gudeg", "ayam"]
+   instructions = ["siapkan nasi", "tambah gudeg", "sajikan"]
+   ```
+
+#### **Using Browser (GET endpoints)**
+- Health: `http://localhost:3000/health`
+- All recipes: `http://localhost:3000/api/recipes`
+- Single recipe: `http://localhost:3000/api/recipes/1`
 
 ## 📝 API Documentation
 
@@ -222,6 +262,12 @@ curl -X GET http://localhost:3000/api/recipes/1
 ```
 
 #### 3. **POST /recipes** - Tambah resep baru ✅
+
+**Supports Multiple Content Types:**
+- ✅ **JSON** (`application/json`)
+- ✅ **Form Data** (`application/x-www-form-urlencoded`)
+
+**JSON Example:**
 ```bash
 curl -X POST http://localhost:3000/api/recipes \
   -H "Content-Type: application/json" \
@@ -232,6 +278,23 @@ curl -X POST http://localhost:3000/api/recipes \
     "instructions": ["Rebus sayuran", "Buat bumbu kacang", "Campurkan semua"]
   }'
 ```
+
+**Form Data Example:**
+```bash
+curl -X POST http://localhost:3000/api/recipes \
+  -d "title=Gudeg Jogja" \
+  -d "description=Gudeg khas Jogja dengan santan" \
+  -d 'ingredients=["500g nangka muda", "200ml santan", "bumbu"]' \
+  -d 'instructions=["Rebus nangka", "Tumis bumbu", "Masak hingga matang"]'
+```
+
+**Postman Testing:**
+1. **JSON**: Body → raw → JSON
+2. **Form Data**: Body → x-www-form-urlencoded
+   - `title`: "Recipe Name"
+   - `description`: "Recipe description"  
+   - `ingredients`: `["ingredient1", "ingredient2"]` (JSON string)
+   - `instructions`: `["step1", "step2"]` (JSON string)
 
 **Response Success (201)**:
 ```json

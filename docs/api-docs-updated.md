@@ -106,6 +106,11 @@ curl -X GET http://localhost:3000/api/recipes/1
 
 **Status**: ✅ **WORKING**
 
+**Supports Multiple Content Types:**
+- ✅ JSON (`application/json`)
+- ✅ Form Data (`application/x-www-form-urlencoded`)
+
+#### JSON Request
 ```http
 POST /api/recipes
 Content-Type: application/json
@@ -131,11 +136,25 @@ Content-Type: application/json
 }
 ```
 
+#### Form Data Request
+```http
+POST /api/recipes
+Content-Type: application/x-www-form-urlencoded
+```
+
+**Form Fields**:
+```
+title=Gudeg Jogja
+description=Gudeg khas Jogja dengan santan kelapa muda
+ingredients=["500g nangka muda", "200ml santan", "2 lembar daun salam"]
+instructions=["Rebus nangka muda hingga empuk", "Tumis bumbu halus", "Masak hingga bumbu meresap"]
+```
+
 **Validation Rules**:
 - `title` (required): String, minimum 3 characters
 - `description` (optional): String
-- `ingredients` (required): Array of strings, minimum 1 item
-- `instructions` (required): Array of strings, minimum 1 item
+- `ingredients` (required): Array of strings OR JSON string array, minimum 1 item
+- `instructions` (required): Array of strings OR JSON string array, minimum 1 item
 
 **Response Success (201)**:
 ```json
@@ -160,7 +179,9 @@ Content-Type: application/json
 }
 ```
 
-**cURL Example**:
+**cURL Examples**:
+
+**JSON:**
 ```bash
 curl -X POST http://localhost:3000/api/recipes \
   -H "Content-Type: application/json" \
@@ -170,6 +191,15 @@ curl -X POST http://localhost:3000/api/recipes \
     "ingredients": ["200g tahu", "200g tempe", "100g kangkung", "100g tauge"],
     "instructions": ["Rebus sayuran hingga matang", "Buat bumbu kacang", "Campurkan semua bahan", "Sajikan dengan kerupuk"]
   }'
+```
+
+**Form Data:**
+```bash
+curl -X POST http://localhost:3000/api/recipes \
+  -d "title=Gudeg Jogja" \
+  -d "description=Gudeg khas Jogja dengan santan kelapa muda" \
+  -d 'ingredients=["500g nangka muda", "200ml santan", "2 lembar daun salam"]' \
+  -d 'instructions=["Rebus nangka muda hingga empuk", "Tumis bumbu halus", "Masak hingga bumbu meresap"]'
 ```
 
 ## 🔄 Coming Soon Endpoints
@@ -249,51 +279,115 @@ GET /health
 }
 ```
 
-## Testing Examples
+## Manual Testing Guide
 
-### Postman Collection
-Import the following into Postman for easy testing:
+### Quick Testing with curl
 
-```json
-{
-  "info": {
-    "name": "Recipe API",
-    "description": "Recipe API Testing Collection"
-  },
-  "item": [
-    {
-      "name": "Get All Recipes",
-      "request": {
-        "method": "GET",
-        "url": "http://localhost:3000/api/recipes"
-      }
-    },
-    {
-      "name": "Get Recipe by ID",
-      "request": {
-        "method": "GET",
-        "url": "http://localhost:3000/api/recipes/1"
-      }
-    },
-    {
-      "name": "Create New Recipe",
-      "request": {
-        "method": "POST",
-        "url": "http://localhost:3000/api/recipes",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "raw": "{\n  \"title\": \"Test Recipe\",\n  \"description\": \"Test Description\",\n  \"ingredients\": [\"ingredient1\", \"ingredient2\"],\n  \"instructions\": [\"step1\", \"step2\"]\n}"
-        }
-      }
-    }
-  ]
-}
+#### Health Check
+```bash
+curl http://localhost:3000/health
 ```
+
+#### Get All Recipes
+```bash
+curl http://localhost:3000/api/recipes
+```
+
+#### Get Recipe by ID
+```bash
+curl http://localhost:3000/api/recipes/1
+```
+
+#### Create Recipe (JSON)
+```bash
+curl -X POST http://localhost:3000/api/recipes \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Simple Test Recipe",
+    "description": "A simple recipe for testing",
+    "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
+    "instructions": ["step1", "step2", "step3"]
+  }'
+```
+
+#### Create Recipe (Form Data)
+```bash
+curl -X POST http://localhost:3000/api/recipes \
+  -d "title=Form Data Recipe" \
+  -d "description=Recipe created via form data" \
+  -d 'ingredients=["form ingredient1", "form ingredient2"]' \
+  -d 'instructions=["form step1", "form step2"]'
+```
+
+#### Test Validation Errors
+```bash
+# Empty title (should return 400)
+curl -X POST http://localhost:3000/api/recipes \
+  -H "Content-Type: application/json" \
+  -d '{"title":"","ingredients":[],"instructions":[]}'
+
+# Invalid ID (should return 404)
+curl http://localhost:3000/api/recipes/999
+```
+
+### Postman Manual Testing
+
+#### Setup Postman Application
+1. **Download Postman** from [postman.com](https://www.postman.com)
+2. **Install and launch** Postman application
+3. **Create new request** in a collection or workspace
+
+#### Example Requests
+
+**1. Health Check**
+- Method: `GET`
+- URL: `http://localhost:3000/health`
+
+**2. Get All Recipes**
+- Method: `GET`
+- URL: `http://localhost:3000/api/recipes`
+
+**3. Create Recipe (Form Data)**
+- Method: `POST`
+- URL: `http://localhost:3000/api/recipes`
+- Body: Select **x-www-form-urlencoded**
+- Add fields:
+  ```
+  title: "Nasi Gudeg"
+  description: "Makanan khas Jogja"
+  ingredients: ["nasi putih", "gudeg", "ayam"]
+  instructions: ["siapkan nasi", "tambahkan gudeg", "sajikan hangat"]
+  ```
+
+**4. Create Recipe (JSON)**
+- Method: `POST`
+- URL: `http://localhost:3000/api/recipes`
+- Headers: `Content-Type: application/json`
+- Body: Select **raw** and **JSON**
+  ```json
+  {
+    "title": "Test Recipe",
+    "description": "Recipe for testing",
+    "ingredients": ["test ingredient 1", "test ingredient 2"],
+    "instructions": ["test step 1", "test step 2"]
+  }
+  ```
+
+### Browser Testing (GET endpoints only)
+- Health Check: `http://localhost:3000/health`
+- All Recipes: `http://localhost:3000/api/recipes`  
+- Single Recipe: `http://localhost:3000/api/recipes/1`
+
+### Testing Checklist
+- [ ] Health check returns 200
+- [ ] Get all recipes returns array
+- [ ] Get recipe by ID returns single recipe
+- [ ] Create recipe with JSON works
+- [ ] Create recipe with form data works
+- [ ] Validation errors return 400
+- [ ] Invalid ID returns 404
+- [ ] Response format is consistent
+- [ ] Request/response logged in terminal
 
 ## Additional Notes
 

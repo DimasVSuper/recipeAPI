@@ -8,11 +8,41 @@ const validateRecipe = (req, res, next) => {
     errors.push('Title is required');
   }
 
-  if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
+  // Handle ingredients (bisa array atau string JSON)
+  if (!ingredients) {
+    errors.push('Ingredients are required');
+  } else if (typeof ingredients === 'string') {
+    // Jika string, coba parse sebagai JSON
+    try {
+      const parsedIngredients = JSON.parse(ingredients);
+      if (!Array.isArray(parsedIngredients) || parsedIngredients.length === 0) {
+        errors.push('Ingredients must be a valid JSON array with at least one item');
+      }
+      // Replace string dengan parsed array
+      req.body.ingredients = parsedIngredients;
+    } catch (e) {
+      errors.push('Ingredients must be a valid JSON array');
+    }
+  } else if (!Array.isArray(ingredients) || ingredients.length === 0) {
     errors.push('Ingredients are required and must be an array');
   }
 
-  if (!instructions || !Array.isArray(instructions) || instructions.length === 0) {
+  // Handle instructions (bisa array atau string JSON)
+  if (!instructions) {
+    errors.push('Instructions are required');
+  } else if (typeof instructions === 'string') {
+    // Jika string, coba parse sebagai JSON
+    try {
+      const parsedInstructions = JSON.parse(instructions);
+      if (!Array.isArray(parsedInstructions) || parsedInstructions.length === 0) {
+        errors.push('Instructions must be a valid JSON array with at least one item');
+      }
+      // Replace string dengan parsed array
+      req.body.instructions = parsedInstructions;
+    } catch (e) {
+      errors.push('Instructions must be a valid JSON array');
+    }
+  } else if (!Array.isArray(instructions) || instructions.length === 0) {
     errors.push('Instructions are required and must be an array');
   }
 

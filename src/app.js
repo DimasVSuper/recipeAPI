@@ -12,7 +12,8 @@ const recipeRoutes = require('./routes/recipeRoutes');
 // Apply middleware in correct order
 app.use(cors);           // 1. CORS first
 app.use(express.json()); // 2. Parse JSON body FIRST
-app.use(logger);         // 3. Log all requests (after body parsing)
+app.use(express.urlencoded({ extended: true })); // 3. Parse form data
+app.use(logger);         // 4. Log all requests (after body parsing)
 
 // Apply routes
 app.use('/api/recipes', recipeRoutes);
