@@ -1,42 +1,37 @@
-const recipeModel = require('../models/recipeModel');
+const recipeService = require('../services/recipeService');
 
-async function getAllRecipes(req, res) {
-  try {
-    const recipes = await recipeModel.getAllRecipes();
-    res.json(recipes);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching recipes' });
-  }
-}
-
-async function getRecipeById(req, res) {
-  try {
-    const recipe = await recipeModel.getRecipeById(req.params.id);
-    if (recipe) {
-      res.json(recipe);
-    } else {
-      res.status(404).json({ message: 'Recipe not found' });
+class RecipeController {
+  // GET all recipes - HANYA handle HTTP request/response
+  async getAllRecipes(req, res, next) {
+    try {
+      const result = await recipeService.getAllRecipes();
+      res.status(200).json(result);
+    } catch (error) {
+      next(error); // Pass error to error handler middleware
     }
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching recipe' });
   }
-}
 
-async function createRecipe(req, res) {
-  try {
-    const { title, description, ingredients, instructions } = req.body;
-    if (!title || !ingredients || !instructions) {
-      return res.status(400).json({ message: 'Title, ingredients, and instructions are required' });
+  // GET recipe by ID - HANYA handle HTTP request/response
+  async getRecipeById(req, res, next) {
+    try {
+      // ID sudah divalidasi di middleware
+      const result = await recipeService.getRecipeById(req.params.id);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error); // Pass error to error handler middleware
     }
-    const recipe = await recipeModel.createRecipe({ title, description, ingredients, instructions });
-    res.status(201).json(recipe);
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating recipe' });
+  }
+
+  // CREATE recipe - HANYA handle HTTP request/response
+  async createRecipe(req, res, next) {
+    try {
+      // Request body sudah divalidasi di middleware
+      const result = await recipeService.createRecipe(req.body);
+      res.status(201).json(result);
+    } catch (error) {
+      next(error); // Pass error to error handler middleware
+    }
   }
 }
 
-module.exports = {
-  getAllRecipes,
-  getRecipeById,
-  createRecipe
-};
+module.exports = new RecipeController();
