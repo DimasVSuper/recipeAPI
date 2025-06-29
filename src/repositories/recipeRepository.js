@@ -18,7 +18,7 @@ class RecipeRepository {
     const { title, description, ingredients, instructions } = recipeData;
     const [result] = await db.query(
       'INSERT INTO recipes (title, description, ingredients, instructions) VALUES (?, ?, ?, ?)',
-      [title, description || null, ingredients, instructions]
+      [title, description || null, JSON.stringify(ingredients), JSON.stringify(instructions)]
     );
     
     // Return data yang baru dibuat

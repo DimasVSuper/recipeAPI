@@ -8,12 +8,12 @@ const validateRecipe = (req, res, next) => {
     errors.push('Title is required');
   }
 
-  if (!ingredients || ingredients.trim() === '') {
-    errors.push('Ingredients are required');
+  if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
+    errors.push('Ingredients are required and must be an array');
   }
 
-  if (!instructions || instructions.trim() === '') {
-    errors.push('Instructions are required');
+  if (!instructions || !Array.isArray(instructions) || instructions.length === 0) {
+    errors.push('Instructions are required and must be an array');
   }
 
   // Validasi panjang minimum
@@ -21,12 +21,12 @@ const validateRecipe = (req, res, next) => {
     errors.push('Title must be at least 3 characters');
   }
 
-  if (ingredients && ingredients.trim().length < 5) {
-    errors.push('Ingredients must be at least 5 characters');
+  if (ingredients && Array.isArray(ingredients) && ingredients.length < 1) {
+    errors.push('At least one ingredient is required');
   }
 
-  if (instructions && instructions.trim().length < 10) {
-    errors.push('Instructions must be at least 10 characters');
+  if (instructions && Array.isArray(instructions) && instructions.length < 1) {
+    errors.push('At least one instruction is required');
   }
 
   // Jika ada error, kirim response error

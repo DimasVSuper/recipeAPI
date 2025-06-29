@@ -72,8 +72,8 @@ class RecipeService {
       const cleanData = {
         title: recipeData.title.trim(),
         description: recipeData.description ? recipeData.description.trim() : null,
-        ingredients: recipeData.ingredients.trim(),
-        instructions: recipeData.instructions.trim()
+        ingredients: recipeData.ingredients, // Already validated as array
+        instructions: recipeData.instructions // Already validated as array
       };
 
       const newRecipe = await recipeRepository.create(cleanData);
@@ -96,12 +96,12 @@ class RecipeService {
       errors.push('Title is required');
     }
 
-    if (!data.ingredients || data.ingredients.trim() === '') {
-      errors.push('Ingredients are required');
+    if (!data.ingredients || !Array.isArray(data.ingredients) || data.ingredients.length === 0) {
+      errors.push('Ingredients are required and must be an array');
     }
 
-    if (!data.instructions || data.instructions.trim() === '') {
-      errors.push('Instructions are required');
+    if (!data.instructions || !Array.isArray(data.instructions) || data.instructions.length === 0) {
+      errors.push('Instructions are required and must be an array');
     }
 
     // Business rule: title minimal 3 karakter
