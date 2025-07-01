@@ -1,4 +1,5 @@
 const recipeRepository = require('../repositories/recipeRepository');
+const RecipeModel = require('../models/recipeModel');
 
 class RecipeService {
   // GET all recipes - Business logic untuk format response
@@ -6,16 +7,8 @@ class RecipeService {
     try {
       const recipes = await recipeRepository.findAll();
       
-      // Business logic: transform data jika perlu
-      const transformedRecipes = recipes.map(recipe => ({
-        id: recipe.id,
-        title: recipe.title,
-        description: recipe.description || 'No description',
-        ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
-        created_at: recipe.created_at,
-        updated_at: recipe.updated_at
-      }));
+      // Data sudah dalam bentuk RecipeModel, langsung transform ke JSON
+      const transformedRecipes = recipes.map(recipe => recipe.toJSON());
 
       return {
         success: true,
@@ -44,15 +37,7 @@ class RecipeService {
       return {
         success: true,
         message: 'Recipe retrieved successfully',
-        data: {
-          id: recipe.id,
-          title: recipe.title,
-          description: recipe.description || 'No description',
-          ingredients: recipe.ingredients,
-          instructions: recipe.instructions,
-          created_at: recipe.created_at,
-          updated_at: recipe.updated_at
-        }
+        data: recipe.toJSON()
       };
     } catch (error) {
       throw error;
@@ -62,33 +47,89 @@ class RecipeService {
   // CREATE recipe - Business logic untuk validasi dan processing
   async createRecipe(recipeData) {
     try {
-      // Business logic: validasi input
-      const errors = this.validateRecipeData(recipeData);
-      if (errors.length > 0) {
-        throw new Error(`Validation errors: ${errors.join(', ')}`);
+      // Buat instance Model untuk validasi
+      const recipeModel = new RecipeModel(recipeData);
+      const validationErrors = recipeModel.validate();
+      
+      if (validationErrors.length > 0) {
+        throw new Error(`Validation errors: ${validationErrors.join(', ')}`);
       }
 
-      // Business logic: clean/transform data sebelum save
-      const cleanData = {
-        title: recipeData.title.trim(),
-        description: recipeData.description ? recipeData.description.trim() : null,
-        ingredients: recipeData.ingredients, // Already validated as array
-        instructions: recipeData.instructions // Already validated as array
-      };
-
+      // Transform data menggunakan Model sebelum save
+      const cleanData = recipeModel.toDatabase();
       const newRecipe = await recipeRepository.create(cleanData);
 
       return {
         success: true,
         message: 'Recipe created successfully',
-        data: newRecipe
+        data: newRecipe.toJSON()
       };
     } catch (error) {
       throw error;
     }
   }
 
-  // Business logic: validasi data recipe
+  // UPDATE recipe - Business logic untuk validasi dan processing
+  async updateRecipe(id, recipeData) {
+    try {
+      // Business logic: validasi ID
+      if (!id || isNaN(id)) {
+        throw new Error('Invalid recipe ID');
+      }
+
+      // Check if recipe exists
+      const existingRecipe = await recipeRepository.findById(parseInt(id));
+      if (!existingRecipe) {
+        throw new Error('Recipe not found');
+      }
+
+      // Buat instance Model untuk validasi
+      const recipeModel = new RecipeModel(recipeData);
+      const validationErrors = recipeModel.validate();
+      
+      if (validationErrors.length > 0) {
+        throw new Error(`Validation errors: ${validationErrors.join(', ')}`);
+      }
+
+      // Transform data menggunakan Model sebelum update
+      const cleanData = recipeModel.toDatabase();
+      const updatedRecipe = await recipeRepository.update(parseInt(id), cleanData);
+
+      return {
+        success: true,
+        message: 'Recipe updated successfully',
+        data: updatedRecipe.toJSON()
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // DELETE recipe - Business logic
+  async deleteRecipe(id) {
+    try {
+      // Business logic: validasi ID
+      if (!id || isNaN(id)) {
+        throw new Error('Invalid recipe ID');
+      }
+
+      const deletedRecipe = await recipeRepository.delete(parseInt(id));
+      
+      if (!deletedRecipe) {
+        throw new Error('Recipe not found');
+      }
+
+      return {
+        success: true,
+        message: 'Recipe deleted successfully',
+        data: deletedRecipe.toJSON()
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Legacy method - akan dihapus setelah migration
   validateRecipeData(data) {
     const errors = [];
 

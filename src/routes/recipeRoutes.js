@@ -12,4 +12,10 @@ router.get('/:id', validateId, recipeController.getRecipeById);
 // CREATE new recipe (validate request body)
 router.post('/', validateRecipe, recipeController.createRecipe);
 
+// UPDATE recipe (validate ID and request body)
+router.put('/:id', validateId, validateRecipe, recipeController.updateRecipe);
+
+// DELETE recipe (validate ID parameter)
+router.delete('/:id', validateId, recipeController.deleteRecipe);
+
 module.exports = router;

@@ -8,7 +8,27 @@ Selamat datang di Recipe API! API ini menyediakan endpoint untuk mengelola resep
 
 > **"Learning by Building, Building by Learning"**
 
-Repo ini adalah **hasil eksplorasi pembelajaran** oleh **Dimas Bayu Nugroho** dalam memahami:
+Repo ### 🏗️ **Architecture & Design**
+- 📋 [**Folder Structure**](docs/folder-structure.md) - Struktur project dan penjelasan setiap direktori
+- 🏗️ [**Layered Architecture**](docs/layered-architecture.md) - Deep dive pattern arsitektur dan best practices
+- 🔗 [**Repository-Model Relationship**](docs/repository-model-relationship.md) - **BARU!** Dokumentasi lengkap hubungan Repository-Model
+- 🔄 [**Application Flow**](docs/application-flow-updated.md) - Alur request-response detail dengan debugging tips
+
+### 🛠️ **Implementation Details** 
+- 📖 [**API Documentation**](docs/api-docs-updated.md) - Complete API reference dengan examples
+- 🛡️ [**Error Handling**](docs/error-handling.md) - Centralized error handling system
+- ⚙️ [**Middleware Guide**](docs/middleware.md) - CORS, logging, validation, error handling
+- 🧪 [**Testing Documentation**](docs/testing.md) - **BARU!** Comprehensive testing guide dengan 80+ tests
+
+### 🎓 **Learning Materials & Tutorials**
+- 📚 [**Complete Learning Guide**](docs/learning/README.md) - **BARU!** Comprehensive learning path dengan 13 chapters
+- 📖 [**Quick Start Guide**](docs/learning/00-introduction.md) - **BARU!** Start your learning journey here
+- 🏗️ [**Architecture Overview**](docs/learning/01-architecture-overview.md) - **BARU!** Understanding layered architecture
+- 🧪 [**Testing Fundamentals**](docs/learning/08-testing-fundamentals.md) - **BARU!** Complete testing strategy
+- 🎛️ [**Controller Layer Guide**](docs/learning/03-controller-layer.md) - **BARU!** HTTP handling mastery
+- ⚙️ [**Service Layer Guide**](docs/learning/04-service-layer.md) - **BARU!** Business logic deep dive
+
+**hasil eksplorasi pembelajaran** oleh **Dimas Bayu Nugroho** dalam memahami:
 - 🏗️ **Layered Architecture** - Pemisahan concerns yang proper ✅
 - ⚙️ **Heavy Backend Logic** - Business logic yang terstruktur dan scalable ✅
 - 🔄 **Clean Code Principles** - Kode yang mudah dibaca dan di-maintain ✅
@@ -23,6 +43,8 @@ Dikembangkan dengan bantuan **GitHub Copilot** dan **Claude Sonnet 3.5** sebagai
 - ✅ Praktik **Service Layer** untuk business logic
 - ✅ Struktur project yang **scalable** dan **maintainable**
 - ✅ Error handling yang **consistent** di setiap layer
+- ✅ **Repository-Model Integration** - Model validation & data transformation
+- ✅ **Clean Data Flow** - Proper separation of concerns antar layer
 
 ---
 
@@ -33,8 +55,9 @@ _"Setiap baris kode adalah pembelajaran, setiap bug adalah guru, setiap refactor
 *   ✅ **Mendapatkan daftar semua resep** - GET endpoint dengan response formatting
 *   ✅ **Mendapatkan detail resep berdasarkan ID** - GET dengan parameter validation
 *   ✅ **Menambahkan resep baru** - POST dengan comprehensive validation dan JSON array support
-*   📝 **Mengupdate resep** (Coming Soon - UPDATE/PUT endpoint)
-*   🗑️ **Menghapus resep** (Coming Soon - DELETE endpoint)
+*   ✅ **Mengupdate resep** - PUT endpoint dengan Model validation dan data transformation
+*   ✅ **Menghapus resep** - DELETE endpoint dengan proper error handling
+*   ✅ **Repository-Model Integration** - Fully integrated Model-Repository relationship
 *   ✅ **Error handling terpusat** - Consistent error responses
 *   ✅ **Request logging** - Comprehensive request/response logging
 *   ✅ **CORS support** - Cross-origin resource sharing
@@ -360,7 +383,8 @@ Proyek ini dilengkapi dengan dokumentasi komprehensif untuk pembelajaran:
 ### 🏗️ **Architecture & Design**
 - 📋 [**Folder Structure**](docs/folder-structure.md) - Struktur project dan penjelasan setiap direktori
 - 🏗️ [**Layered Architecture**](docs/layered-architecture.md) - Deep dive pattern arsitektur dan best practices
-- 🔄 [**Application Flow**](docs/application-flow-updated.md) - Alur request-response detail dengan debugging tips
+- � [**Repository-Model Relationship**](docs/repository-model-relationship.md) - **BARU!** Dokumentasi lengkap hubungan Repository-Model
+- �🔄 [**Application Flow**](docs/application-flow-updated.md) - Alur request-response detail dengan debugging tips
 
 ### 🛠️ **Implementation Details** 
 - 📖 [**API Documentation**](docs/api-docs-updated.md) - Complete API reference dengan examples

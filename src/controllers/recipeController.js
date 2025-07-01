@@ -32,6 +32,28 @@ class RecipeController {
       next(error); // Pass error to error handler middleware
     }
   }
+
+  // UPDATE recipe - HANYA handle HTTP request/response
+  async updateRecipe(req, res, next) {
+    try {
+      // ID dan request body sudah divalidasi di middleware
+      const result = await recipeService.updateRecipe(req.params.id, req.body);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error); // Pass error to error handler middleware
+    }
+  }
+
+  // DELETE recipe - HANYA handle HTTP request/response
+  async deleteRecipe(req, res, next) {
+    try {
+      // ID sudah divalidasi di middleware
+      const result = await recipeService.deleteRecipe(req.params.id);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error); // Pass error to error handler middleware
+    }
+  }
 }
 
 module.exports = new RecipeController();
